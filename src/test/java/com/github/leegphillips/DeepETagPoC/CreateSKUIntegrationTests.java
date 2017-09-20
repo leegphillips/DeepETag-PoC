@@ -26,8 +26,6 @@ public class CreateSKUIntegrationTests {
         SKU sku = new SKU();
         sku.setCreated(new Date());
         ResponseEntity<SKU> responseEntity = restTemplate.postForEntity("/sku", sku, SKU.class);
-        SKU body = responseEntity.getBody();
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(sku.getCreated(), body.getCreated());
     }
 }
