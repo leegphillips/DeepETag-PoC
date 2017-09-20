@@ -12,5 +12,4 @@ public class DeepETagPoCApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-
 }
