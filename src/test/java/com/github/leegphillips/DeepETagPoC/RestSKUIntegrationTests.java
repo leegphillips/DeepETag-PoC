@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CreateSKUIntegrationTests {
+public class RestSKUIntegrationTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -27,5 +27,11 @@ public class CreateSKUIntegrationTests {
         sku.setCreated(new Date());
         ResponseEntity<SKU> responseEntity = restTemplate.postForEntity("/sku", sku, SKU.class);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void fetchSKU() {
+        ResponseEntity<SKU> responseEntity = restTemplate.getForEntity("/sku/1", SKU.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 }
