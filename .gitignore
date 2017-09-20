@@ -23,4 +23,8 @@ hs_err_pid*
 
 .idea
 *.iml
+<<<<<<< HEAD
 target
+=======
+target
+>>>>>>> 5925b0c56801e6b5b12a804f930a17368b6023a7
