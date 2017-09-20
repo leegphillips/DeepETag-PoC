@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 
+import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -23,9 +24,7 @@ public class RestSKUIntegrationTests {
 
     @Test
     public void createSKU() {
-        SKU sku = new SKU();
-        sku.setCreated(new Date());
-        ResponseEntity<SKU> responseEntity = restTemplate.postForEntity("/sku", sku, SKU.class);
+        ResponseEntity<SKU> responseEntity = restTemplate.postForEntity("/sku", random(SKU.class), SKU.class);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
     }
 
