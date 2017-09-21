@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,7 +30,7 @@ public class RestSKUIntegrationTests {
         assertEquals(HttpStatus.CREATED, responseEntity1.getStatusCode());
 
         SKU created = responseEntity1.getBody();
-        assertThat(sku, new ReflectionEquals(created, "id"));
+        assertTrue(new ReflectionEquals(created, "id").matches(sku));
 
         ResponseEntity<SKU> responseEntity2 = restTemplate.getForEntity("/sku/" + created.getId(), SKU.class);
         assertEquals(HttpStatus.OK, responseEntity2.getStatusCode());

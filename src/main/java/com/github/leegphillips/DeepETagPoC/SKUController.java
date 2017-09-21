@@ -12,18 +12,16 @@ import org.springframework.web.bind.annotation.*;
 public class SKUController {
 
     @Autowired
-    private SKURepository skuRepository;
+    private SKUDao skuDao;
 
     @RequestMapping(value = "/sku", method = RequestMethod.POST)
     public ResponseEntity<?> createSKU(@RequestBody SKU sku) {
-        skuRepository.save(sku);
+        skuDao.save(sku);
         return new ResponseEntity<>(sku, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "sku/{id}")
     public SKU fetchSKU(@PathVariable String id) {
-        SKU sku = new SKU();
-        sku.setId(id);
-        return skuRepository.findOne(Example.of(sku));
+        return skuDao.get(id);
     }
 }
