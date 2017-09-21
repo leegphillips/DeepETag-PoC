@@ -23,25 +23,17 @@ public class RestSKUIntegrationTests {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void createSKU() {
-        SKU sku = random(SKU.class);
-        ResponseEntity<SKU> responseEntity = restTemplate.postForEntity("/sku", sku, SKU.class);
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertThat(sku, new ReflectionEquals(responseEntity.getBody(), "id"));
-    }
+    public void createFetchPersists() {
+        SKU sku = random(SKU.class, "id");
+        ResponseEntity<SKU> responseEntity1 = restTemplate.postForEntity("/sku", sku, SKU.class);
+        assertEquals(HttpStatus.CREATED, responseEntity1.getStatusCode());
 
-    @Test
-    public void fetchSKU() {
-        ResponseEntity<SKU> responseEntity = restTemplate.getForEntity("/sku/1", SKU.class);
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    }
+        SKU created = responseEntity1.getBody();
+        assertThat(sku, new ReflectionEquals(created, "id"));
 
-    @Test
-    public void createPersists() {
-        SKU sku = random(SKU.class);
-        ResponseEntity<SKU> responseEntity = restTemplate.postForEntity("/sku", sku, SKU.class);
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        ResponseEntity<SKU> responseEntity2 = restTemplate.getForEntity("/sku/" + created.getId(), SKU.class);
+        assertEquals(HttpStatus.OK, responseEntity2.getStatusCode());
 
-        // TBC
+        assertEquals(created, responseEntity2.getBody());
     }
 }

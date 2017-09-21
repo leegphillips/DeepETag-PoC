@@ -1,17 +1,24 @@
 package com.github.leegphillips.DeepETagPoC.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+
 import java.util.Date;
 
 public class SKU {
 
-    private Date created;
-    private long id;
+    @Id
+    private String id;
 
-    public long getId() {
+    private Date created;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -24,20 +31,29 @@ public class SKU {
     }
 
     @Override
+    public String toString() {
+        try {
+            return this.getClass().getSimpleName() + ":" + new ObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         SKU sku = (SKU) o;
 
-        if (id != sku.id) return false;
+        if (id != null ? !id.equals(sku.id) : sku.id != null) return false;
         return created != null ? created.equals(sku.created) : sku.created == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (created != null ? created.hashCode() : 0);
         return result;
     }
