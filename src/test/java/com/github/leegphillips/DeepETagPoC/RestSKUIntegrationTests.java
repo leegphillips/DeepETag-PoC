@@ -33,4 +33,13 @@ public class RestSKUIntegrationTests {
         ResponseEntity<SKU> responseEntity = restTemplate.getForEntity("/sku/1", SKU.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
+
+    @Test
+    public void createPersists() {
+        SKU sku = random(SKU.class);
+        ResponseEntity<SKU> responseEntity = restTemplate.postForEntity("/sku", sku, SKU.class);
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+
+        // TBC
+    }
 }
