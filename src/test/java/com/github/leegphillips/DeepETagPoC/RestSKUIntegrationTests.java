@@ -22,8 +22,10 @@ public class RestSKUIntegrationTests {
 
     @Test
     public void createSKU() {
-        ResponseEntity<SKU> responseEntity = restTemplate.postForEntity("/sku", random(SKU.class), SKU.class);
+        SKU sku = random(SKU.class);
+        ResponseEntity<SKU> responseEntity = restTemplate.postForEntity("/sku", sku, SKU.class);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertEquals(sku, responseEntity.getBody());
     }
 
     @Test
