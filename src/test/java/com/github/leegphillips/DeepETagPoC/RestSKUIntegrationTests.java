@@ -3,6 +3,7 @@ package com.github.leegphillips.DeepETagPoC;
 import com.github.leegphillips.DeepETagPoC.model.SKU;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -25,7 +27,7 @@ public class RestSKUIntegrationTests {
         SKU sku = random(SKU.class);
         ResponseEntity<SKU> responseEntity = restTemplate.postForEntity("/sku", sku, SKU.class);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(sku, responseEntity.getBody());
+        assertThat(sku, new ReflectionEquals(responseEntity.getBody(), "id"));
     }
 
     @Test
