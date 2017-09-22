@@ -1,8 +1,6 @@
-package com.github.leegphillips.DeepETagPoC;
+package com.github.leegphillips.deepetagpoc;
 
-import com.github.leegphillips.DeepETagPoC.model.SKU;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClients;
+import com.github.leegphillips.deepetagpoc.model.SKU;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
@@ -12,7 +10,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;

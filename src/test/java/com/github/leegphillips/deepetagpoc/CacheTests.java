@@ -1,6 +1,6 @@
-package com.github.leegphillips.DeepETagPoC;
+package com.github.leegphillips.deepetagpoc;
 
-import com.github.leegphillips.DeepETagPoC.model.SKU;
+import com.github.leegphillips.deepetagpoc.model.SKU;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

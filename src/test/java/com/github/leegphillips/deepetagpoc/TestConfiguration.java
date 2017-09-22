@@ -1,4 +1,4 @@
-package com.github.leegphillips.DeepETagPoC;
+package com.github.leegphillips.deepetagpoc;
 
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
