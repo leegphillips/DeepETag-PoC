@@ -1,6 +1,7 @@
 package com.github.leegphillips.deepetagpoc;
 
 import com.github.leegphillips.deepetagpoc.model.SKU;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,14 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = DeepETagPoCApplication.class)
 public class SKURepositoryTests {
+
     @Autowired
     private SKURepository skuRepository;
+
+    @Before
+    public void clearRepository() {
+        skuRepository.deleteAll();
+    }
 
     @Test
     public void persistSetsID() {

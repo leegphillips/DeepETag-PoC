@@ -34,17 +34,17 @@ public class CacheTests {
     @Test
     public void checkDoubleFetchOnlyCallsRepoOnce() {
         SKU sku = random(SKU.class);
-        skuController.fetchSKU(sku.getId());
-        skuController.fetchSKU(sku.getId());
+        skuController.fetchSKU(sku.getId(), null);
+        skuController.fetchSKU(sku.getId(), null);
         verify(skuRepository, times(1)).findOne(any(Example.class));
     }
 
     @Test
     public void checkPatchEvictsCache() {
         SKU sku = random(SKU.class);
-        skuController.fetchSKU(sku.getId());
+        skuController.fetchSKU(sku.getId(), null);
         skuController.patchSKU(sku);
-        skuController.fetchSKU(sku.getId());
+        skuController.fetchSKU(sku.getId(), null);
         verify(skuRepository, times(2)).findOne(any(Example.class));
     }
 }

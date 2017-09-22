@@ -1,6 +1,7 @@
 package com.github.leegphillips.deepetagpoc;
 
 import com.github.leegphillips.deepetagpoc.model.SKU;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
@@ -23,6 +24,14 @@ public class RestSKUIntegrationTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private SKURepository skuRepository;
+
+    @Before
+    public void clearRepository() {
+        skuRepository.deleteAll();
+    }
 
     @PostConstruct
     public void restTemplateCannotDoPatch() {
@@ -55,6 +64,12 @@ public class RestSKUIntegrationTests {
         assertEquals(HttpStatus.OK, patchResponse.getStatusCode());
 
         checkFetchSKUMatchesInput(created);
+    }
+
+    @Test
+    public void invalidFetchErrors() {
+        ResponseEntity<SKU> responseEntity = restTemplate.getForEntity("/sku/null", SKU.class);
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 
     private void checkFetchSKUMatchesInput(SKU sku) {
