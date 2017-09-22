@@ -15,8 +15,7 @@ import javax.annotation.PostConstruct;
 import java.util.Date;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -32,32 +31,46 @@ public class RestSKUIntegrationTests {
     }
 
     @Test
+    public void persistPopulatesID() {
+        SKU sku = random(SKU.class, "id");
+        assertNull(sku.getId());
+        SKU created = persistSKUViaRest(sku);
+        assertNotNull(created.getId());
+    }
+
+    @Test
     public void createFetchPersists() {
         SKU sku = random(SKU.class, "id");
-        ResponseEntity<SKU> responseEntity1 = restTemplate.postForEntity("/sku", sku, SKU.class);
-        assertEquals(HttpStatus.CREATED, responseEntity1.getStatusCode());
-
-        SKU created = responseEntity1.getBody();
-        assertTrue(new ReflectionEquals(created, "id").matches(sku));
-
-        ResponseEntity<SKU> responseEntity2 = restTemplate.getForEntity("/sku/" + created.getId(), SKU.class);
-        assertEquals(HttpStatus.OK, responseEntity2.getStatusCode());
-
-        assertEquals(created, responseEntity2.getBody());
+        SKU created = persistSKUViaRest(sku);
+        checkFetchSKUMatchesInput(created);
     }
 
     @Test
     public void checkPatchUpdates() {
         SKU sku = random(SKU.class, "id");
+        SKU created = persistSKUViaRest(sku);
+
+        created.setCreated(new Date());
+        ResponseEntity<SKU> patchResponse = doPatch("/sku", created);
+        assertEquals(HttpStatus.OK, patchResponse.getStatusCode());
+
+        checkFetchSKUMatchesInput(created);
+    }
+
+    private void checkFetchSKUMatchesInput(SKU sku) {
+        ResponseEntity<SKU> responseEntity2 = restTemplate.getForEntity("/sku/" + sku.getId(), SKU.class);
+        assertEquals(HttpStatus.OK, responseEntity2.getStatusCode());
+        assertEquals(sku, responseEntity2.getBody());
+    }
+
+    private SKU persistSKUViaRest(SKU sku) {
         ResponseEntity<SKU> responseEntity1 = restTemplate.postForEntity("/sku", sku, SKU.class);
         assertEquals(HttpStatus.CREATED, responseEntity1.getStatusCode());
 
         SKU created = responseEntity1.getBody();
         assertTrue(new ReflectionEquals(created, "id").matches(sku));
 
-        created.setCreated(new Date());
-        ResponseEntity<SKU> patchResponse = doPatch("/sku/" + created.getId(), created);
-        assertEquals(HttpStatus.ACCEPTED, patchResponse.getStatusCode());
+        return created;
     }
 
     // RestTemplate cannot currently do PATCH

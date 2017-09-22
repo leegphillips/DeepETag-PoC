@@ -14,7 +14,7 @@ public class SKUController {
     private SKUDao skuDao;
 
     @RequestMapping(value = "/sku", method = RequestMethod.POST)
-    public ResponseEntity<?> createSKU(@RequestBody SKU sku) {
+    public ResponseEntity<SKU> createSKU(@RequestBody SKU sku) {
         skuDao.save(sku);
         return new ResponseEntity<>(sku, HttpStatus.CREATED);
     }
@@ -24,9 +24,9 @@ public class SKUController {
         return skuDao.get(id);
     }
 
-    @RequestMapping(value = "/sku/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<?> patchSKU(@PathVariable String id) {
-        return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+    @RequestMapping(value = "/sku", method = RequestMethod.PATCH)
+    public ResponseEntity<SKU> patchSKU(@RequestBody SKU sku) {
+        skuDao.merge(sku);
+        return new ResponseEntity<>(sku, HttpStatus.OK);
     }
-
 }
